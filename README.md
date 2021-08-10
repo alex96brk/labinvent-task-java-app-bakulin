@@ -13,6 +13,4 @@ DataBase: MySQL v5.6 x64. Для запуска БД использовался 
 
 Для запуска backend приложения необходимо выполнить следующие действия:
 
-1) Выполнить инициализацию скрипта MySQL базы данных: 
-  1.1) Имя БД: invent_lab_test_task_bakulin - указано в файле src/main/resources/application.properties
-  1.2) 
+1) Выполнить инициализацию скрипта MySQL базы данных: Имя БД: invent_lab_test_task_bakulin - указано в файле src/main/resources/application.properties
