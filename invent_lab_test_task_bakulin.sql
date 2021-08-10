@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Aug 10, 2021 at 08:17 PM
+-- Generation Time: Aug 10, 2021 at 11:50 PM
 -- Server version: 5.6.41-log
 -- PHP Version: 5.5.38
 
@@ -37,7 +37,7 @@ CREATE TABLE `hibernate_sequence` (
 --
 
 INSERT INTO `hibernate_sequence` (`next_val`) VALUES
-(17);
+(18);
 
 -- --------------------------------------------------------
 
@@ -141,13 +141,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `authorities`, `email`, `first_name`, `is_active`, `is_not_locked`, `join_date`, `last_login_date`, `last_login_date_display`, `last_name`, `password`, `role`, `user_id`, `user_name`, `user_profile_image_url`) VALUES
-(10, '$2a$10$1qEHjOTnw6ZpVijAnAmZaexyjnR4pijYQ7xnsD1csCLW1p2Yh5sES', 'summer.smith.spring5@gmail.com', 'Summer', b'1', b'1', '2021-08-10 11:34:23', '2021-08-10 14:49:28', '2021-08-10 14:45:33', 'Smith', '$2a$10$/wnQ4RiA7My2IIs5IVD2beXkytcqhCekzE1.lZUTa8LgsWD1HaYXO', 'ROLE_USER', '8227402640', 'summersmith', 'http://localhost:8081/user/image/profile/summersmith'),
 (11, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000001740009757365723a72656164, 'fictiveuser1@mail.com', 'Alice', b'0', b'1', '2021-08-10 14:59:32', NULL, NULL, 'Cooper', '$2a$10$NNtWApEwv3fPmTV2DmLCve/bRaVM.SArbelO6LBEN.so7IlYKCzby', 'ROLE_USER', '8333153865', 'fictiveuser1', 'http://localhost:8081/user/image/profile/fictiveuser1'),
 (12, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000001740009757365723a72656164, 'fictiveuser2@mai.com', 'Paul', b'0', b'1', '2021-08-10 14:59:26', NULL, NULL, 'Anderson', '$2a$10$PHQGpRBi0t2Wqw6OsPcZGO7T0PAGau7vLnseYIagttta4YZb0Omsm', 'ROLE_USER', '2994894147', 'fictiveuser2', 'http://localhost:8081/user/image/profile/fictiveuser2'),
 (13, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000001740009757365723a72656164, 'fictiveuser3@mail.com', 'David', b'0', b'1', '2021-08-10 14:59:21', NULL, NULL, 'Raw', '$2a$10$XwPY2LD2/R7RHekoRjgTO.WuqO8VXJPAVGDS1thfsSa/wn/aKv/tu', 'ROLE_USER', '5354683361', 'fictiveuser3', 'http://localhost:8081/user/image/profile/fictiveuser3'),
 (14, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000001740009757365723a72656164, 'fictiveuser4@mail.com', 'Sam', b'0', b'1', '2021-08-10 14:59:13', NULL, NULL, 'Smith', '$2a$10$qqZ8hg.LUdQ3dRiBvZVXn.O.17Ma29.tmwe6qVBJS6GHoDscfbPaG', 'ROLE_USER', '8523857237', 'fictiveuser4', 'http://localhost:8081/user/image/profile/fictiveuser4'),
 (15, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000001740009757365723a72656164, 'fictiveuser5@mail.com', 'Andrew', b'0', b'1', '2021-08-10 14:59:10', NULL, NULL, 'Borson', '$2a$10$c2H2ZtMW99gjwUW19iZ.jOWqPmzyT0wycUQNnu1Lz.JVOsEBkf2DC', 'ROLE_USER', '0221924625', 'fictiveuser5', 'http://localhost:8081/user/image/profile/fictiveuser5'),
-(16, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000004740009757365723a7265616474000b757365723a75706461746574000b757365723a63726561746574000b757365723a64656c657465, 'morthy.smith007@gmail.com', 'Morty', b'1', b'1', '2021-08-10 14:52:55', '2021-08-10 14:52:47', '2021-08-10 14:51:58', 'Smith', '$2a$10$GCRA43/9WpCj8VC3P3m02OFzMc7dY086.LsEJKZGy99reFYktRuWa', 'ROLE_ADMIN', '8671885159', 'mortysmith', 'http://localhost:8081/user/image/profile/mortysmith');
+(16, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000004740009757365723a7265616474000b757365723a75706461746574000b757365723a63726561746574000b757365723a64656c657465, 'morthy.smith007@gmail.com', 'Morty', b'1', b'1', '2021-08-10 14:52:55', '2021-08-10 14:52:47', '2021-08-10 14:51:58', 'Smith', '$2a$10$GCRA43/9WpCj8VC3P3m02OFzMc7dY086.LsEJKZGy99reFYktRuWa', 'ROLE_ADMIN', '8671885159', 'mortysmith', 'http://localhost:8081/user/image/profile/mortysmith'),
+(17, 0xaced0005757200135b4c6a6176612e6c616e672e537472696e673badd256e7e91d7b47020000787000000001740009757365723a72656164, 'summer.smith.spring5@gmail.com', 'Summer', b'1', b'1', '2021-08-10 20:48:05', '2021-08-10 20:48:35', NULL, 'Smith', '$2a$10$IviKuhMugzc2h/v5XytgguxozUjvLmCdThKZ601Q7K8HaljrBuMt2', 'ROLE_USER', '4824730863', 'summersmith', 'http://localhost:8081/user/image/profile/summersmith');
 
 --
 -- Indexes for dumped tables
