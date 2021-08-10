@@ -1,10 +1,7 @@
 package com.bakulin.labinvent.test.task.service;
 
-import com.bakulin.labinvent.test.task.exception.domain.EmailExistException;
-import com.bakulin.labinvent.test.task.exception.domain.EmailNotFoundException;
-import com.bakulin.labinvent.test.task.exception.domain.UserNotFoundException;
-import com.bakulin.labinvent.test.task.exception.domain.UsernameExistException;
-import com.bakulin.labinvent.test.task.model.User;
+import com.bakulin.labinvent.test.task.exception.user.*;
+import com.bakulin.labinvent.test.task.model.entity.User;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
@@ -13,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User register(String firstName, String lastName, String username, String email) throws UserNotFoundException, EmailExistException, UsernameExistException, MessagingException;
+    User register(String firstName, String lastName, String username, String email) throws UserNotFoundException, EmailExistException, UsernameExistException, MessagingException, InvalidEmailException;
 
     List<User> getUsers();
 
@@ -21,14 +18,14 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    User addNewUser(String firstName, String lastName, String userName, String email, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UserNotFoundException, EmailExistException, UsernameExistException, IOException;
+    User addNewUser(String firstName, String lastName, String userName, String email, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UserNotFoundException, EmailExistException, UsernameExistException, IOException, MessagingException, NotAnImageFileException, InvalidEmailException;
 
-    User updateUser(String currentUserName,String newFirstName, String newLastName, String newUserName, String newEmail, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UserNotFoundException, EmailExistException, UsernameExistException, IOException;
+    User updateUser(String currentUserName,String newFirstName, String newLastName, String newUserName, String newEmail, String role, boolean isNonLocked, boolean isActive, MultipartFile profileImage) throws UserNotFoundException, EmailExistException, UsernameExistException, IOException, NotAnImageFileException, InvalidEmailException;
 
-    void deleteUser(long id);
+    void deleteUser(String userName) throws IOException;
 
     void resetPassword(String email) throws EmailNotFoundException, MessagingException;
 
-    User updateProfileImage(String userName, MultipartFile profileImage) throws UserNotFoundException, EmailExistException, UsernameExistException, IOException;
+    User updateProfileImage(String userName, MultipartFile profileImage) throws UserNotFoundException, EmailExistException, UsernameExistException, IOException, NotAnImageFileException, InvalidEmailException;
 
 }

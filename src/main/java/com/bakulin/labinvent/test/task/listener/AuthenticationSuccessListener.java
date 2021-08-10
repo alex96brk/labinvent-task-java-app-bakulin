@@ -1,6 +1,5 @@
 package com.bakulin.labinvent.test.task.listener;
 
-import com.bakulin.labinvent.test.task.model.User;
 import com.bakulin.labinvent.test.task.security.UserPrincipal;
 import com.bakulin.labinvent.test.task.service.impl.LoginAttemptService;
 import org.springframework.beans.factory.annotation.Autowired;

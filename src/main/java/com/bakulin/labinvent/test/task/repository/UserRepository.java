@@ -1,6 +1,6 @@
 package com.bakulin.labinvent.test.task.repository;
 
-import com.bakulin.labinvent.test.task.model.User;
+import com.bakulin.labinvent.test.task.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

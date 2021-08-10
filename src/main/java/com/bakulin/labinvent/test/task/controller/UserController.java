@@ -2,11 +2,8 @@ package com.bakulin.labinvent.test.task.controller;
 
 import com.bakulin.labinvent.test.task.domain.HttpResponse;
 import com.bakulin.labinvent.test.task.exception.ExceptionHandling;
-import com.bakulin.labinvent.test.task.exception.domain.EmailExistException;
-import com.bakulin.labinvent.test.task.exception.domain.EmailNotFoundException;
-import com.bakulin.labinvent.test.task.exception.domain.UserNotFoundException;
-import com.bakulin.labinvent.test.task.exception.domain.UsernameExistException;
-import com.bakulin.labinvent.test.task.model.User;
+import com.bakulin.labinvent.test.task.exception.user.*;
+import com.bakulin.labinvent.test.task.model.entity.User;
 import com.bakulin.labinvent.test.task.security.UserPrincipal;
 import com.bakulin.labinvent.test.task.service.UserService;
 import com.bakulin.labinvent.test.task.utils.JWTTokenProvider;
@@ -32,11 +29,12 @@ import java.util.List;
 
 import static com.bakulin.labinvent.test.task.constant.FileConstant.*;
 import static com.bakulin.labinvent.test.task.constant.SecurityConstant.*;
+import static com.bakulin.labinvent.test.task.constant.UserConstant.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG_VALUE;
 
 @RestController
-@RequestMapping(path = {"/","/user"})
+@RequestMapping(path = {"/", "/user"})
 public class UserController extends ExceptionHandling {
     private UserService userService;
     private AuthenticationManager authenticationManager;
@@ -56,11 +54,11 @@ public class UserController extends ExceptionHandling {
         User loginUser = userService.findByUserName(user.getUserName());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
-        return new ResponseEntity<>(loginUser, jwtHeader , OK);
+        return new ResponseEntity<>(loginUser, jwtHeader, OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, EmailExistException, UsernameExistException, MessagingException {
+    public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, EmailExistException, UsernameExistException, MessagingException, InvalidEmailException {
         User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUserName(), user.getEmail());
         return new ResponseEntity<>(newUser, OK);
     }
@@ -73,8 +71,8 @@ public class UserController extends ExceptionHandling {
                                            @RequestParam("role") String role,
                                            @RequestParam("isActive") String isActive,
                                            @RequestParam("isNonLocked") String isNonLocked,
-                                           @RequestParam(value = "profileImage", required = false)MultipartFile profileImage) throws UserNotFoundException, EmailExistException, IOException, UsernameExistException {
-        User newUser = userService.addNewUser(firstName, lastName,userName,email,role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
+                                           @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws UserNotFoundException, EmailExistException, IOException, UsernameExistException, MessagingException, NotAnImageFileException, InvalidEmailException {
+        User newUser = userService.addNewUser(firstName, lastName, userName, email, role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
         return new ResponseEntity<>(newUser, OK);
     }
 
@@ -87,8 +85,8 @@ public class UserController extends ExceptionHandling {
                                            @RequestParam("role") String role,
                                            @RequestParam("isActive") String isActive,
                                            @RequestParam("isNonLocked") String isNonLocked,
-                                           @RequestParam(value = "profileImage", required = false)MultipartFile profileImage) throws UserNotFoundException, EmailExistException, IOException, UsernameExistException {
-        User updateUser = userService.updateUser(currentUserName,firstName, lastName,userName,email,role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
+                                           @RequestParam(value = "profileImage", required = false) MultipartFile profileImage) throws UserNotFoundException, EmailExistException, IOException, UsernameExistException, NotAnImageFileException, InvalidEmailException {
+        User updateUser = userService.updateUser(currentUserName, firstName, lastName, userName, email, role, Boolean.parseBoolean(isNonLocked), Boolean.parseBoolean(isActive), profileImage);
         return new ResponseEntity<>(updateUser, OK);
     }
 
@@ -110,21 +108,21 @@ public class UserController extends ExceptionHandling {
         return response(OK, EMAIL_SENT + email);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{userName}")
     @PreAuthorize("hasAnyAuthority('user:delete')")
-    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("id") long id) {
-        userService.deleteUser(id);
+    public ResponseEntity<HttpResponse> deleteUser(@PathVariable("userName") String userName) throws IOException {
+        userService.deleteUser(userName);
         return response(OK, USER_DELETED_SUCCESSFULLY);
     }
 
     @PostMapping("/update-profile-image")
-    public ResponseEntity<User> updateProfileImage(@RequestParam("userName") String userName, @RequestParam(value = "profileImage")MultipartFile profileImage) throws UserNotFoundException, EmailExistException, IOException, UsernameExistException {
-        User updateUserImage = userService.updateProfileImage(userName,profileImage);
+    public ResponseEntity<User> updateProfileImage(@RequestParam("userName") String userName, @RequestParam(value = "profileImage") MultipartFile profileImage) throws UserNotFoundException, EmailExistException, IOException, UsernameExistException, NotAnImageFileException, InvalidEmailException {
+        User updateUserImage = userService.updateProfileImage(userName, profileImage);
         return new ResponseEntity<>(updateUserImage, OK);
     }
 
     @GetMapping(path = "/image/{userName}/{fileName}", produces = IMAGE_JPEG_VALUE)
-    public byte[] getProfileImage(@PathVariable("userName") String userName, @PathVariable("fileName") String fileName ) throws IOException {
+    public byte[] getProfileImage(@PathVariable("userName") String userName, @PathVariable("fileName") String fileName) throws IOException {
         return Files.readAllBytes(Paths.get(USER_FOLDER + userName + FORWARD_SLASH + fileName));
     }
 
@@ -132,7 +130,7 @@ public class UserController extends ExceptionHandling {
     public byte[] getTempProfileImage(@PathVariable("userName") String userName) throws IOException {
         URL url = new URL(TEMP_PROFILE_IMAGE_BASE_URL + userName);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try(InputStream inputStream = url.openStream()) {
+        try (InputStream inputStream = url.openStream()) {
             int bytesRead;
             byte[] chunk = new byte[1024];
             while ((bytesRead = inputStream.read(chunk)) > 0) {
@@ -143,7 +141,7 @@ public class UserController extends ExceptionHandling {
     }
 
     private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
-        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),message.toUpperCase()), httpStatus);
+        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(), message.toUpperCase()), httpStatus);
     }
 
     private HttpHeaders getJwtHeader(UserPrincipal userPrincipal) {
@@ -154,7 +152,6 @@ public class UserController extends ExceptionHandling {
 
     private void authenticate(String username, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-
     }
-//Ds2rKmW3Tu
+
 }

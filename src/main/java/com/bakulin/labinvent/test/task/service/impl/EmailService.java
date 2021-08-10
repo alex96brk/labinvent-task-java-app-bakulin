@@ -26,13 +26,13 @@ public class EmailService {
         smtpTransport.close();
     }
 
-    private Message createEmail(String firstName, String password, String email) throws MessagingException {
+    private Message createEmail(String userName, String password, String email) throws MessagingException {
         Message message = new MimeMessage(getEmailSession());
         message.setFrom(new InternetAddress(FROM_EMAIL));
         message.setRecipients(TO, InternetAddress.parse(email, false));
         message.setRecipients(CC, InternetAddress.parse(CC_EMAIL, false));
         message.setSubject(EMAIL_SUBJECT);
-        message.setText("Hello " + firstName + ", \n \n Your new Account password is: " + password + "\n \n The Support Team");
+        message.setText("Hello " + userName + ", \n \n Your new Account password is: " + password + "\n \n The Support Team");
         message.setSentDate(new Date());
         message.saveChanges();
         return message;

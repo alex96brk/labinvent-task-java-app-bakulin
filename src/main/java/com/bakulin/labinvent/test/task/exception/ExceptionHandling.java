@@ -2,10 +2,10 @@ package com.bakulin.labinvent.test.task.exception;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.bakulin.labinvent.test.task.domain.HttpResponse;
-import com.bakulin.labinvent.test.task.exception.domain.EmailExistException;
-import com.bakulin.labinvent.test.task.exception.domain.EmailNotFoundException;
-import com.bakulin.labinvent.test.task.exception.domain.UserNotFoundException;
-import com.bakulin.labinvent.test.task.exception.domain.UsernameExistException;
+import com.bakulin.labinvent.test.task.exception.sensor.SensorModelExistsException;
+import com.bakulin.labinvent.test.task.exception.sensor.SensorNameExistsException;
+import com.bakulin.labinvent.test.task.exception.sensor.SensorNotFoundException;
+import com.bakulin.labinvent.test.task.exception.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -85,6 +84,21 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(BAD_REQUEST, exception.getMessage());
     }
 
+    @ExceptionHandler(value = SensorNameExistsException.class)
+    public ResponseEntity<HttpResponse> sensorNameExistException(SensorNameExistsException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(value = SensorModelExistsException.class)
+    public ResponseEntity<HttpResponse> sensorModelExistException(SensorModelExistsException exception) {
+        return  createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(value = SensorNotFoundException.class)
+    public ResponseEntity<HttpResponse> sensorNotFoundException(SensorNotFoundException exception) {
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
+
     @ExceptionHandler(value = NoHandlerFoundException.class)
     public ResponseEntity<HttpResponse> notFound404(NoHandlerFoundException e) {
         return createHttpResponse(NOT_FOUND, "There is no mapping for this URL");
@@ -102,11 +116,11 @@ public class ExceptionHandling implements ErrorController {
         return createHttpResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR_MSG);
     }
 
-//    @ExceptionHandler(NotAnImageFileException.class)
-//    public ResponseEntity<HttpResponse> notAnImageFileException(NotAnImageFileException exception) {
-//        LOGGER.error(exception.getMessage());
-//        return createHttpResponse(BAD_REQUEST, exception.getMessage());
-//    }
+    @ExceptionHandler(NotAnImageFileException.class)
+    public ResponseEntity<HttpResponse> notAnImageFileException(NotAnImageFileException exception) {
+        LOGGER.error(exception.getMessage());
+        return createHttpResponse(BAD_REQUEST, exception.getMessage());
+    }
 
     @ExceptionHandler(value = NoResultException.class)
     public ResponseEntity<HttpResponse> notFoundException(NoResultException exception) {

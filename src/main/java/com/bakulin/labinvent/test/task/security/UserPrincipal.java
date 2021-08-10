@@ -1,6 +1,6 @@
 package com.bakulin.labinvent.test.task.security;
 
-import com.bakulin.labinvent.test.task.model.User;
+import com.bakulin.labinvent.test.task.model.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
